@@ -54,25 +54,25 @@ function solution1(n, wires) {
 // 다른 코드 참고해보니 단어 전체 조합 저장하고 일치하는 문자열 INDEX 가져옴
 function solution2(word) {
     let answer = 0;
-    
+
     let dictionary = [];
     const alphabets = [['A'], ['E'], ['I'], ['O'], ['U']];
-    
+
     const initWord = "";
     const initIndex = 0;
 
     // 조합 가능한 단어들 저장
     dictionary = setDictionary(initWord, initIndex, dictionary, alphabets);
     dictionary.sort();
-    
+
     // 단어와 일치하는 index 가져오기
     answer = dictionary.indexOf(word);
-    
+
     return answer;
 }
 function setDictionary(initWord, initIndex, dictionary, alphabets) {
     dictionary.push(initWord);
-    
+
     for (let i = 0; i < alphabets.length; i++) {
         if (initIndex < alphabets.length) {
             setDictionary(initWord + alphabets[i], initIndex + 1, dictionary, alphabets);
@@ -86,3 +86,28 @@ function refer(words) {
     return words.split('').reduce((r, c, i) => r + [781, 156, 31, 6, 1][i] * ['A', 'E', 'I', 'O', 'U'].indexOf(c) + 1, 0);
 }
 //
+
+// Lv.1 모의고사
+// 무식하게 다 저장하지 말고 머리를 쓰자
+function solution(answers) {
+    let answer = [];
+
+    // 수포자 녀석들 찍는 패턴 배열에 저장
+    const patterns = ["12345", "21232425", "3311224455"]; // 1, 2, 3
+
+    // 초기 점수 세팅 1, 2, 3
+    const scores = [0, 0, 0];
+
+    for (let i = 0; i < answers.length; i++) {
+        if (answers[i] === Number(patterns[0][i % patterns[0].length])) scores[0] += 1;
+        if (answers[i] === Number(patterns[1][i % patterns[1].length])) scores[1] += 1;
+        if (answers[i] === Number(patterns[2][i % patterns[2].length])) scores[2] += 1;
+    }
+
+    const highScore = Math.max(...scores);
+    scores.forEach((score, index) => {
+        if (highScore === score) answer.push(index + 1);
+    });
+
+    return answer;
+}
