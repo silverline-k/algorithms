@@ -89,7 +89,7 @@ function refer(words) {
 
 // Lv.1 모의고사
 // 무식하게 다 저장하지 말고 머리를 쓰자
-function solution(answers) {
+function solution3(answers) {
     let answer = [];
 
     // 수포자 녀석들 찍는 패턴 배열에 저장
@@ -111,3 +111,46 @@ function solution(answers) {
 
     return answer;
 }
+
+// Lv.2 소수찾기
+// 완전탐색 알고리즘 나올 때 무조건 while문 사용하려고 하지 말고 재귀함수 먼저 생각하기
+function solution4(numbers) {
+    let answer = 0;
+    
+    // 모든 숫자 조합 만드는 재귀 함수로 소수 일 때 set에 추가
+    const primeNumbers = generatePrimeNumbers("", numbers, new Set());
+    console.log(primeNumbers);
+
+    answer = primeNumbers.size;
+    
+    return answer;
+}
+function checkPrimeNumber(number) {
+    if (number <= 1) return false;
+
+    for (let i = 2; i <= Math.sqrt(number); i++) {
+        if (number % i === 0) return false;
+    }
+
+    return true;
+}
+function generatePrimeNumbers(initNum, numbers, primeNumbers) {
+    if (initNum.length > 0) {
+        // 에라토스테네스의 체 공식 사용해서 소수 찾기
+        const number = Number(initNum);
+        const isPrime = checkPrimeNumber(number);
+        if (isPrime) {
+            primeNumbers.add(number);
+        }
+    }
+
+    for (let i = 0; i < numbers.length; i++) {
+        const combination = initNum + numbers[i];
+        const other = numbers.substring(0, i) + numbers.substring(i + 1);
+
+        generatePrimeNumbers(combination, other, primeNumbers);
+    }
+
+    return primeNumbers;
+}
+//
