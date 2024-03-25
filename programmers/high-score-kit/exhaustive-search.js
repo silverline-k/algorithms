@@ -154,3 +154,28 @@ function generatePrimeNumbers(initNum, numbers, primeNumbers) {
     return primeNumbers;
 }
 //
+
+// Lv.2 피로도
+// 다른 사람 코드 참고했음
+// 탐험, 경로탐색 같은 문제는 방문 여부 확인 필요
+function solution4(k, dungeons) { // 현재 피로도, [[최소 필요 피로도, 소모 피로도]]
+    let answer = 0; // 최대 던전 수
+    
+    const visitedList = new Array(dungeons.length).fill(0);
+
+    const dfs = (fatigue, count, visitedList) => {
+        answer = Math.max(answer, count);
+
+        for (let i = 0; i < dungeons.length; i++) {
+            if (visitedList[i] === 0 && fatigue >= dungeons[i][0]) {
+                visitedList[i] = 1;
+                dfs(fatigue - dungeons[i][1], count + 1, visitedList);
+                visitedList[i] = 0;
+            }
+        }
+    }
+
+    dfs(k, 0, visitedList);
+
+    return answer;
+}
