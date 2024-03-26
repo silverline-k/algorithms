@@ -179,3 +179,21 @@ function solution4(k, dungeons) { // 현재 피로도, [[최소 필요 피로도
 
     return answer;
 }
+
+// Lv.1 최소직사각형
+// 문제를 잘 읽고 분석하자. 이상한 방법으로 풀다가 다른 사람 풀이 봤음
+// 세로 길이보다 가로 길이가 더 길다고 가정할 때
+function solution(sizes) {
+    let maxWidth = 0;
+    let maxHeight = 0;
+    
+    for (let i = 0; i < sizes; i++) {
+        const h = Math.max(sizes[i][0], sizes[i][1]);
+        const w = Math.min(sizes[i][0], sizes[i][1]);
+        
+        maxHeight = Math.max(maxHeight, w);
+        maxWidth = Math.max(maxWidth, h);
+    }
+    
+    return maxHeight * maxHeight;
+}
