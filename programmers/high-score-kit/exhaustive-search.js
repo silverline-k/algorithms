@@ -116,13 +116,13 @@ function solution3(answers) {
 // 완전탐색 알고리즘 나올 때 무조건 while문 사용하려고 하지 말고 재귀함수 먼저 생각하기
 function solution4(numbers) {
     let answer = 0;
-    
+
     // 모든 숫자 조합 만드는 재귀 함수로 소수 일 때 set에 추가
     const primeNumbers = generatePrimeNumbers("", numbers, new Set());
     console.log(primeNumbers);
 
     answer = primeNumbers.size;
-    
+
     return answer;
 }
 function checkPrimeNumber(number) {
@@ -160,7 +160,7 @@ function generatePrimeNumbers(initNum, numbers, primeNumbers) {
 // 탐험, 경로탐색 같은 문제는 방문 여부 확인 필요
 function solution4(k, dungeons) { // 현재 피로도, [[최소 필요 피로도, 소모 피로도]]
     let answer = 0; // 최대 던전 수
-    
+
     const visitedList = new Array(dungeons.length).fill(0);
 
     const dfs = (fatigue, count, visitedList) => {
@@ -183,17 +183,39 @@ function solution4(k, dungeons) { // 현재 피로도, [[최소 필요 피로도
 // Lv.1 최소직사각형
 // 문제를 잘 읽고 분석하자. 이상한 방법으로 풀다가 다른 사람 풀이 봤음
 // 세로 길이보다 가로 길이가 더 길다고 가정할 때
-function solution(sizes) {
+function solution5(sizes) {
     let maxWidth = 0;
     let maxHeight = 0;
-    
+
     for (let i = 0; i < sizes; i++) {
         const h = Math.max(sizes[i][0], sizes[i][1]);
         const w = Math.min(sizes[i][0], sizes[i][1]);
-        
+
         maxHeight = Math.max(maxHeight, w);
         maxWidth = Math.max(maxWidth, h);
     }
-    
+
     return maxHeight * maxHeight;
+}
+
+// Lv.2 카펫
+// 테스트케이스에서 걸려서 다른 사람 풀이 참고했음
+function solution6(brown, yellow) {
+    let answer = [];
+
+    const total = brown + yellow;
+
+    for (let x = 3; x < parseInt(Math.sqrt(total)) + 1; x++) {
+        if (total % x === 0) {
+            y = total / x;
+
+            // (x-2) * (y-2) = yellow 인 이유 > brown 격자가 테두리 1줄로 되어 있기 떄문
+            if ((x-2) * (y-2) === yellow) {
+                return answer = [y, x];
+            }
+        }
+
+    }
+
+    return answer;
 }
