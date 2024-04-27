@@ -25,7 +25,7 @@ function solution1(numbers, target) {
 }
 
 // Lv.3 네트워크
-function solution(n, computers) {
+function solution2(n, computers) {
     let answer = 0;
 
     const checked = new Array(n).fill(0);
@@ -49,4 +49,45 @@ function solution(n, computers) {
     }
 
     return answer;
+}
+
+
+// Lv.3 여행경로
+// 무조건 순서대로만 갔을 경우 모든 항공권 사용하지 않는 경우 발생함
+function solution(tickets) {
+    let answer = [];
+
+    const airportInfo = new Map();
+
+    // 출발 공항 별로 도착하는 공항들 순서대로 Map에 저장
+    for (let i = 0; i < tickets.length; i++) {
+        const [departure, arrival] = tickets[i];
+
+        const airports = airportInfo.get(departure);
+
+        if (airports) {
+            airports.push(arrival);
+            airportInfo.set(departure, [...airports.sort()]);
+        } else {
+            airportInfo.set(departure, [arrival]);
+        }
+    }
+
+    const path = ['ICN'];
+
+    while(path.length) {
+        const departure = path[path.length - 1];
+
+        const airports = airportInfo.get(departure);
+        if (airports && airports.length > 0) {
+            path.push(airports.shift());
+            airportInfo.set(departure, airports);
+        } else {
+            // 제일 처음 ICN 제외하고 먼저 들어간 경우 경로 끊겨있는 경우일 수 있음 그래서 리턴할 때 역정렬해야 함
+            // [["ICN", "D"], ["D", "ICN"], ["ICN", "B"]] 케이스 고려해서 구현해야 함
+            answer.push(path.pop());
+        }
+    }
+
+    return answer.reverse();
 }
