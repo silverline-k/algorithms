@@ -9,9 +9,16 @@ import assert from 'assert';
 */
 export function runTest(testName, soluctionFunc, expectedResult, ...args) {
     try {
+        const startTime = process.hrtime();
+
         const result = soluctionFunc(...args);
+
+        const endTime = process.hrtime(startTime);
+        const duration = endTime[0] * 1000 + endTime[1] / 1000000;
+
         assert.strictEqual(result, expectedResult);
-        console.log(`${testName}: Success!`);
+
+        console.log(`${testName}: Success! (${duration} ms)`);
     } catch (error) {
         console.error(`${testName}: ${error.message}`);
     }
