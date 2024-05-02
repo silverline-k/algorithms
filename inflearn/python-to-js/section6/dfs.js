@@ -70,3 +70,34 @@ runTest('generateSubsets #1', generateSubsets,
     ],
     3
 )
+
+// 합이 같은 부분집합
+function checkEqualSubsetSums(n, elements) {
+    let answer = 'NO';
+
+    const totalSum = elements.reduce((prev, curr) => prev + curr, 0);
+
+    const dfs = (index, sum) => {
+        // 더 추가될 부분집합의 합이 다른 부분집합의 합보다 클 경우 더이상 더해서 비교할 필요 없음
+        if (sum > totalSum - sum) return;
+
+        if (index === n) {
+            if (sum === totalSum - sum) {
+                answer = 'YES';
+            }
+
+            return;
+        }
+
+        dfs(index + 1, sum + elements[index]); // elements[index] 부분집합 포함
+        dfs(index + 1, sum); // elements[index] 부분집합 미포함
+    };
+
+    dfs(0, 0);
+
+    return answer;
+}
+
+runTest('checkEqualSubsetSums #1', checkEqualSubsetSums, 'YES', 6, [1, 3, 5, 6, 7, 10]);
+runTest('checkEqualSubsetSums #2', checkEqualSubsetSums, 'NO', 9, [3, 6, 13, 11, 7, 16, 34, 23, 12]);
+runTest('checkEqualSubsetSums #3', checkEqualSubsetSums, 'YES', 10, [3, 6, 9, 13, 11, 7, 16, 34, 23, 12]);
