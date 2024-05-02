@@ -1,4 +1,4 @@
-import { runTest } from "../test-helper.js";
+import { runTest } from "../../../test-helper.js";
 
 function convertDecimalToBinary(decimal) {
     let answer = '';
