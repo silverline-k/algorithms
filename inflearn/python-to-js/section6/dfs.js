@@ -101,3 +101,35 @@ function checkEqualSubsetSums(n, elements) {
 runTest('checkEqualSubsetSums #1', checkEqualSubsetSums, 'YES', 6, [1, 3, 5, 6, 7, 10]);
 runTest('checkEqualSubsetSums #2', checkEqualSubsetSums, 'NO', 9, [3, 6, 13, 11, 7, 16, 34, 23, 12]);
 runTest('checkEqualSubsetSums #3', checkEqualSubsetSums, 'YES', 10, [3, 6, 9, 13, 11, 7, 16, 34, 23, 12]);
+
+// 바둑이 승차
+// 무거운 순으로 정렬해서 하려고 했는데 어차피 부분집합 전체 볼 거라서 상관없다 오히려 정렬하는게 시간 더 걸림
+function getHeaviestTotalWeights(limit, n, weightList) {
+    let answer = 0;
+
+    const allWeightSum = weightList.reduce((prev, curr) => prev + curr, 0);
+
+    const dfs = (index, weightSum, totalWeightSum) => {
+        // 아래 조건문 없으면 실행시간 오래 걸림
+        if (weightSum + (allWeightSum - totalWeightSum) < answer) return;
+
+        if (weightSum > limit) return;
+        if (index === n) {
+            if (answer < weightSum) {
+                answer = weightSum;
+            }
+
+            return;
+        }
+
+        dfs(index + 1, weightSum + weightList[index], totalWeightSum + weightList[index]);
+        dfs(index + 1, weightSum, totalWeightSum + weightList[index]);
+    }
+
+    dfs(0, 0, 0);
+
+    return answer;
+}
+
+runTest('getHeaviestTotalWeights #1', getHeaviestTotalWeights, 242, 259, 5, [81, 58, 42, 33, 61]);
+runTest('getHeaviestTotalWeights #2', getHeaviestTotalWeights, 22640, 100000000, 21, [27, 567, 999, 234, 50, 567, 123, 4734, 754, 84, 35, 1353, 76, 464, 4634, 65, 89, 3553, 59, 38, 4135]);
