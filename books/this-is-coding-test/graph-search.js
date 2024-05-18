@@ -53,3 +53,54 @@ runTest("getFillCount", getFillCount, 3, 4, 5, [
     [1, 1, 1, 1, 1],
     [0, 0, 0, 0, 0],
 ]);
+
+/**
+ * 문제: 미로 탈출 (난이도 1.5/3)
+ * 내 풀이: 최소 이동 칸 개수 구하기니까 BFS
+ *   - 상하좌우 탐색 탐색할 때마다 누적합 저장
+ *   - dx, dy 배열 저장 for문 돌리기
+ *   - 방문 여부 체크
+ * 강의 풀이보다 빠름, 방문 여부 차이인듯
+*/
+function getMinStepsToExit(n, m, arr) {
+    // 상 하 좌 우
+    const dx = [0, 0, -1, 1];
+    const dy = [-1, 1, 0, 0];
+
+    const queue = [[0, 0, 1]];
+
+    // 방문했는지 확인 필요
+    const visited = new Set();
+
+    while (queue.length) {
+        const [x, y, count] = queue.shift();
+
+        // 상하좌우로 괴물 없는 부분인지 확인하고 맞으면 1 더하고 제일 먼저 도착점 도달하면 최단거리 리턴
+        if (x === m - 1 && y === n - 1) return count;
+
+        if (visited.has(`${x},${y}`)) {
+            continue;
+        } else {
+            visited.add(`${x},${y}`);
+        }
+
+        for (let i = 0; i < 4; i++) {
+            const nx = x + dx[i];
+            const ny = y + dy[i];
+
+            if (nx >= 0 && ny >= 0 && nx < m && ny < n && arr[ny][nx]) {
+                queue.push([nx, ny, count + 1]);
+            }
+        }
+    }
+
+    return 0;
+}
+
+runTest('getMinStepsToExit', getMinStepsToExit, 10, 5, 6, [
+    [1, 0, 1, 0, 1, 0],
+    [1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1]
+]);

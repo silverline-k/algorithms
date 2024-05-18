@@ -25,5 +25,6 @@ export function runTest(testName, soluctionFunc, expectedResult, ...args) {
         console.log(`${testName}: Success! (${duration} ms)`);
     } catch (error) {
         console.error(`${testName}: ${error.message}`);
+        console.trace();
     }
 }
