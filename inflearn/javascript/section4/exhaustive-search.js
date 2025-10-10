@@ -4,6 +4,7 @@ import fs from 'fs';
 const input1 = fs.readFileSync('./inflearn/javascript/section4/input1.txt').toString().trim().split('\n');
 const input2 = fs.readFileSync('./inflearn/javascript/section4/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section4/input3.txt').toString().trim().split('\n');
+const input4 = fs.readFileSync('./inflearn/javascript/section4/input4.txt').toString().trim().split('\n');
 
 // 1. 자릿수의 합
 // 타입 변환해서 구현할 생각하지 말고 수학적으로 생각할 것
@@ -131,6 +132,35 @@ function solution3(n, m, ranks) {
     return answer;
 }
 
+// 4. 졸업 선물
+// 각자 원하는 상품 가격, 배송비 제출
+// 현재 예산으로 최대 몇 명의 선물을 사줄 수 있는지 구하기
+// 상품 하나를 50% 할인해서 살 수 있는 쿠폰 있음, 배송비는 x
+function solution4(n, m, wishlist) {
+    // 반복문 돌면서 한도까지 다 더해보기 (2중for문)
+    // 할인율 적용하려면 while문 써야하나..? -> 애초에 할인된 금액으로 다 더해보는 방법이 있다는 것...
+    let answer = 0;
+
+    wishlist.sort((a, b) => (a[0] + a[1]) - (b[0] + b[1]));
+
+    for (let i = 0; i < n; i++) {
+        let total = m - (Math.floor(wishlist[i][0] / 2) + wishlist[i][1]);
+        let count = 1;
+
+        for (let j = 0; j < n; j++) {
+            if (i === j) continue;
+            total -= wishlist[j][0] + wishlist[j][1];
+            if (total < 0) break;
+            count++;
+        }
+
+        if (answer < count) answer = count;
+    }
+
+    return answer;
+}
+
 runTest('자릿수의 합 #1', solution1, 137, input1[0], input1[1].split(' ').map(Number));
 runTest('뒤집은 소수 #1', solution2, '23 2 73 2 3', input2[0], input2[1].split(' ').map(Number));
 runTest('멘토링 #1', solution3, 3, parseInt(input3[0].split(' ')[0]), parseInt(input3[0].split(' ')[1]), input3.slice(1).map((v) => v.split(' ').map(Number)));
+runTest('졸업선물 #1', solution4, 4, parseInt(input4[0].split(' ')[0]), parseInt(input4[0].split(' ')[1]), input4.slice(1).map((v) => v.split(' ').map(Number)));
