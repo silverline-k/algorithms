@@ -5,6 +5,7 @@ const input1 = fs.readFileSync('./inflearn/javascript/section4/input1.txt').toSt
 const input2 = fs.readFileSync('./inflearn/javascript/section4/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section4/input3.txt').toString().trim().split('\n');
 const input4 = fs.readFileSync('./inflearn/javascript/section4/input4.txt').toString().trim().split('\n');
+const input5 = fs.readFileSync('./inflearn/javascript/section4/input5.txt').toString().trim().split('\n');
 
 // 1. 자릿수의 합
 // 타입 변환해서 구현할 생각하지 말고 수학적으로 생각할 것
@@ -160,7 +161,61 @@ function solution4(n, m, wishlist) {
     return answer;
 }
 
+// 5. K번째 큰 수
+// 1~100사이 자연수가 적힌 N장의 카드, 같은 숫자의 카드가 여러장 있을 수 있음
+// 3장을 뽑아서 합한 값 기록, 뽑을 수 있는 모든 경우 기록
+// 기록한 값 중 K번째 큰 값 찾기
+function solution5(n, k, arr) {
+    // 반복문 돌면서 다 더하고 정렬해서 index로 값 찾기
+    // set에 넣고 배열로 만들어서 정렬하기 (중복 값 있어서)
+    let answer = 0;
+    let sums = new Set();
+
+    for (let i = 0; i < n; i++) {
+        let sum = arr[i];
+
+        for (let j = 0; j < n; j++) {
+            if (i === j) continue;
+            sum += arr[j];
+
+            for (let k = 0; k < n; k++) {
+                if (i === k || j === k) continue;
+                sum += arr[k];
+                sums.add(sum);
+                sum -= arr[k];
+            }
+
+            sum -= arr[j];
+        }
+    }
+
+    const sortedSumArr = [...sums].sort((a, b) => b - a);
+    answer = sortedSumArr[k - 1];
+
+    return answer;
+}
+// 5번 강의 풀이 (이게 더 실행속도 빠름)
+// function solution5(n, k, arr) {
+//     let answer = 0;
+//     let sums = new Set();
+
+//     // 총 3개 조합이라서 하나씩 더한 값으로 반복문 도는 듯
+//     for (let i = 0; i < n; i++) {
+//         for (let j = i + 1; j < n; j++) {
+//             for (let k = j + 1; k < n; k++) {
+//                 sums.add(arr[i] + arr[j] + arr[k]);
+//             }
+//         }
+//     }
+
+//     const sortedSumArr = [...sums].sort((a, b) => b - a);
+//     answer = sortedSumArr[k - 1];
+
+//     return answer;
+// }
+
 runTest('자릿수의 합 #1', solution1, 137, input1[0], input1[1].split(' ').map(Number));
 runTest('뒤집은 소수 #1', solution2, '23 2 73 2 3', input2[0], input2[1].split(' ').map(Number));
 runTest('멘토링 #1', solution3, 3, parseInt(input3[0].split(' ')[0]), parseInt(input3[0].split(' ')[1]), input3.slice(1).map((v) => v.split(' ').map(Number)));
 runTest('졸업선물 #1', solution4, 4, parseInt(input4[0].split(' ')[0]), parseInt(input4[0].split(' ')[1]), input4.slice(1).map((v) => v.split(' ').map(Number)));
+runTest('K번째 큰 수', solution5, 143, parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
