@@ -63,7 +63,7 @@ function solution3(n, m, sequence) {
         if (sum === m) {
             sum -= sequence[start];
             answer++;
-            start--;
+            start++;
         } else if (sum > m) {
             sum -= sequence[start];
             if (sum === m) {
