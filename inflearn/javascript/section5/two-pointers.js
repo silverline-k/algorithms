@@ -5,6 +5,7 @@ const input1 = fs.readFileSync('./inflearn/javascript/section5/input1.txt').toSt
 const input2 = fs.readFileSync('./inflearn/javascript/section5/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section5/input3.txt').toString().trim().split('\n');
 const input4 = fs.readFileSync('./inflearn/javascript/section5/input4.txt').toString().trim().split('\n');
+const input5 = fs.readFileSync('./inflearn/javascript/section5/input5.txt').toString().trim().split('\n');
 
 // 1. 두 배열 합치기
 // while문 3개나 썼는데 더 좋은 방법 없는지 찾아보기
@@ -121,7 +122,46 @@ function solution4(n, m, sequence) {
     return answer.toString();
 }
 
+// 5. 최대 매출
+// N일 동안의 매출기록, 연속된 K일 동안의 최대 매출액 얼마인지 구하기
+// 슬라이딩 윈도우 활용하기 O(n)
+// function solution5(n, k, dailySales) {
+//     let answer = 0;
+//     let sum = 0;
+//     let count = 0;
+//     let left = 0;
+
+//     // n개만큼 돌기. k크기의 윈도우로 조회하고 더하기
+//     for (let i = 0; i < n; i++) {
+//         sum += dailySales[i];
+//         if (count === k) {
+//             sum -= dailySales[left++];
+//             answer = Math.max(answer, sum);
+//         } else count++;
+//     }
+
+//     return answer.toString();
+// }
+// 강의 풀이, 위에 풀이보다 분기처리 없어서 속도 더 빠름
+function solution5(n, k, dailySales) {
+    let answer = 0;
+    let sum = 0;
+
+    // k번까지 미리 계산
+    for (let i = 0; i < k; i++) sum += dailySales[i];
+    answer = sum;
+
+    for (let i = k; i < n; i++) {
+        // 슬라이딩 윈도우 패턴!
+        sum += (dailySales[i] - dailySales[i - k]);
+        answer = Math.max(answer, sum);
+    }
+
+    return answer.toString();
+}
+
 runTest('두 배열 합치기 #1', solution1, '1 2 3 3 5 6 7 9', parseInt(input1[0]), input1[1].split(' ').map(Number), parseInt(input1[2]), input1[3].split(' ').map(Number));
 runTest('공통원소 구하기 #1', solution2, '2 3 5', parseInt(input2[0]), parseInt(input2[1]), input2[2].split(' ').map(Number), input2[3].split(' ').map(Number));
 runTest('연속 부분수열1 #1', solution3, '3', parseInt(input3[0].split(' ')[0]), parseInt(input3[0].split(' ')[1]), input3[1].split(' ').map(Number));
 runTest('연속 부분수열2 #1', solution4, '10', parseInt(input4[0].split(' ')[0]), parseInt(input4[0].split(' ')[1]), input4[1].split(' ').map(Number));
+runTest('최대 매출 #1', solution5, '56', parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
