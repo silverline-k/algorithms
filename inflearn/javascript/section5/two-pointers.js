@@ -7,6 +7,8 @@ const input3 = fs.readFileSync('./inflearn/javascript/section5/input3.txt').toSt
 const input4 = fs.readFileSync('./inflearn/javascript/section5/input4.txt').toString().trim().split('\n');
 const input5 = fs.readFileSync('./inflearn/javascript/section5/input5.txt').toString().trim().split('\n');
 const input6 = fs.readFileSync('./inflearn/javascript/section5/input6.txt').toString().trim().split('\n');
+const input7_1 = fs.readFileSync('./inflearn/javascript/section5/input7-1.txt').toString().trim().split('\n');
+const input7_2 = fs.readFileSync('./inflearn/javascript/section5/input7-2.txt').toString().trim().split('\n');
 
 // 1. 두 배열 합치기
 // while문 3개나 썼는데 더 좋은 방법 없는지 찾아보기
@@ -187,9 +189,38 @@ function solution6(n, ballotPapers) {
     return answer;
 }
 
+// 7. 아나그램(해쉬)
+// 길이가 같은 두 개의 문자열의 구성이 일치하는지 판별하기
+function solution7(str1, str2) {
+    let answer = 'YES';
+
+    const str1Counts = new Map();
+    const str2Counts = new Map();
+
+    for (let str of str1) {
+        if (str1Counts.has(str)) str1Counts.set(str, str1Counts.get(str) + 1);
+        else str1Counts.set(str, 1);
+    }
+
+    for (let str of str2) {
+        if (str2Counts.has(str)) str2Counts.set(str, str2Counts.get(str) + 1);
+        else str2Counts.set(str, 1);
+    }
+
+    // 두 개의 문자열 길이가 같다는 가정이니까 한 개만 돌리기
+    str1Counts.forEach((v, k) => {
+        if (str2Counts.get(k) !== v) answer = 'NO';
+    });
+
+    return answer;
+}
+
 runTest('두 배열 합치기 #1', solution1, '1 2 3 3 5 6 7 9', parseInt(input1[0]), input1[1].split(' ').map(Number), parseInt(input1[2]), input1[3].split(' ').map(Number));
 runTest('공통원소 구하기 #1', solution2, '2 3 5', parseInt(input2[0]), parseInt(input2[1]), input2[2].split(' ').map(Number), input2[3].split(' ').map(Number));
 runTest('연속 부분수열1 #1', solution3, '3', parseInt(input3[0].split(' ')[0]), parseInt(input3[0].split(' ')[1]), input3[1].split(' ').map(Number));
 runTest('연속 부분수열2 #1', solution4, '10', parseInt(input4[0].split(' ')[0]), parseInt(input4[0].split(' ')[1]), input4[1].split(' ').map(Number));
 runTest('최대 매출 #1', solution5, '56', parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
-runTest('학급 회장(해쉬)', solution6, 'C', parseInt(input6[0]), input6[1].split(''));
+runTest('학급 회장(해쉬) #1', solution6, 'C', parseInt(input6[0]), input6[1].split(''));
+runTest('아나그램(해쉬) #1', solution7, 'YES', input7_1[0], input7_1[1]);
+runTest('아나그램(해쉬) #2', solution7, 'NO', input7_2[0], input7_2[1]);
+
