@@ -6,6 +6,7 @@ const input2 = fs.readFileSync('./inflearn/javascript/section5/input2.txt').toSt
 const input3 = fs.readFileSync('./inflearn/javascript/section5/input3.txt').toString().trim().split('\n');
 const input4 = fs.readFileSync('./inflearn/javascript/section5/input4.txt').toString().trim().split('\n');
 const input5 = fs.readFileSync('./inflearn/javascript/section5/input5.txt').toString().trim().split('\n');
+const input6 = fs.readFileSync('./inflearn/javascript/section5/input6.txt').toString().trim().split('\n');
 
 // 1. 두 배열 합치기
 // while문 3개나 썼는데 더 좋은 방법 없는지 찾아보기
@@ -160,8 +161,35 @@ function solution5(n, k, dailySales) {
     return answer.toString();
 }
 
+// 6. 학급 회장(해쉬)
+// 투표용지를 보고 어떤 기호의 후보가 학급 회장이 되었는지 출력하기
+// 반드시 한 명의 학급회장이 선출되도록 투표결과가 나왔다는 가정 (중복 없다는 뜻인가?)
+function solution6(n, ballotPapers) {
+    let answer = '';
+    const ballot = new Map();
+
+    for (let candidate of ballotPapers) {
+        let count = ballot.get(candidate);
+
+        if (count) {
+            ballot.set(candidate, ++count);
+        } else ballot.set(candidate, 1);
+    }
+
+    let max = 0;
+    ballot.forEach((v, k) => {
+        if (v > max) {
+            max = v;
+            answer = k;
+        }
+    });
+
+    return answer;
+}
+
 runTest('두 배열 합치기 #1', solution1, '1 2 3 3 5 6 7 9', parseInt(input1[0]), input1[1].split(' ').map(Number), parseInt(input1[2]), input1[3].split(' ').map(Number));
 runTest('공통원소 구하기 #1', solution2, '2 3 5', parseInt(input2[0]), parseInt(input2[1]), input2[2].split(' ').map(Number), input2[3].split(' ').map(Number));
 runTest('연속 부분수열1 #1', solution3, '3', parseInt(input3[0].split(' ')[0]), parseInt(input3[0].split(' ')[1]), input3[1].split(' ').map(Number));
 runTest('연속 부분수열2 #1', solution4, '10', parseInt(input4[0].split(' ')[0]), parseInt(input4[0].split(' ')[1]), input4[1].split(' ').map(Number));
 runTest('최대 매출 #1', solution5, '56', parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
+runTest('학급 회장(해쉬)', solution6, 'C', parseInt(input6[0]), input6[1].split(''));
