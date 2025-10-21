@@ -4,6 +4,7 @@ const input1_1 = fs.readFileSync('./inflearn/javascript/section6/input1-1.txt').
 const input1_2 = fs.readFileSync('./inflearn/javascript/section6/input1-2.txt').toString().trim().split('\n');
 const input2 = fs.readFileSync('./inflearn/javascript/section6/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section6/input3.txt').toString().trim().split('\n');
+const input4 = fs.readFileSync('./inflearn/javascript/section6/input4.txt').toString().trim().split('\n');
 
 // 1. 올바른 괄호
 // 문자열의 최대 길이 30
@@ -69,7 +70,43 @@ function solution3(board, moves) {
     return answer;
 }
 
+// 4. 후위식 연산(postfix)
+function solution4(str) {
+    let answer = 0;
+    const nums = [];
+
+    // 피연산자 스택에 넣고 연산자 나오면 계산
+    for (const x of str) {
+        if (isNaN(x) && nums.length > 1) {
+            const b = nums.pop();
+            const a = nums.pop();
+            let total = 0;
+
+            switch (x) {
+                case '+':
+                    total = a + b;
+                    break;
+                case '-':
+                    total = a - b;
+                    break;
+                case '*':
+                    total = a * b;
+                    break;
+                case '/':
+                    total = a / b;
+                    break;
+            }
+
+            nums.push(total);
+        } else nums.push(parseInt(x));
+    }
+    answer = nums[0];
+
+    return answer;
+}
+
 runTest('올바른 괄호 #1', solution1, 'NO', input1_1[0]);
 runTest('올바른 괄호 #2', solution1, 'YES', input1_2[0]);
 runTest('괄호문자제거 #1', solution2, 'EFLM', input2[0]);
 runTest('크레인 인형뽑기(카카오 기출) #1', solution3, 4, JSON.parse(input3[0]), JSON.parse(input3[1]));
+runTest('후위식 연산(postfix) #1', solution4, 12, input4[0]);
