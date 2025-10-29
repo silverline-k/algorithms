@@ -5,6 +5,8 @@ const input1_2 = fs.readFileSync('./inflearn/javascript/section6/input1-2.txt').
 const input2 = fs.readFileSync('./inflearn/javascript/section6/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section6/input3.txt').toString().trim().split('\n');
 const input4 = fs.readFileSync('./inflearn/javascript/section6/input4.txt').toString().trim().split('\n');
+const input5_1 = fs.readFileSync('./inflearn/javascript/section6/input5-1.txt').toString().trim().split('\n');
+const input5_2 = fs.readFileSync('./inflearn/javascript/section6/input5-2.txt').toString().trim().split('\n');
 
 // 1. 올바른 괄호
 // 문자열의 최대 길이 30
@@ -105,8 +107,33 @@ function solution4(str) {
     return answer;
 }
 
+// 5. 쇠막대기
+// 레이저 수직 발사 쇠막대기 절단, 자신보다 긴 쇠막대기 위에만 놓일 수 있음
+// 각 쇠막대기를 자르는 레이저 적어도 하나 존재, 레이저는 어떤 쇠막대기의 양 끝점과도 겹치지않음
+// 레이저는 '()'로 표현, 쇠막대기의 왼쪽 끝 '(' 오른쪽 끝 ')'
+// 잘려진 쇠막대기 조각의 총 개수 구하기
+// !레이저 찾으면 스택에 넣고 while문으로 확인하려고 했는데 이 방법은 비효율적이고 무한루프 돈다. 원래 괄호 문자열에서 찾아서 해결할 것
+function solution5(str) {
+    let answer = 0;
+    const stack = [];
+
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] === ')') {
+            stack.pop();
+            // 바로 앞에 여는 괄호인 경우 레이저 판정, 잘린 막대기 더하기
+            // 아닌 경우 막대기 판정, 해당 막대기는 끝났음 마지막 부분 +1
+            if (str[i - 1] === '(') answer += stack.length;
+            else answer++;
+        } else stack.push(str[i]);
+    }
+
+    return answer;
+}
+
 runTest('올바른 괄호 #1', solution1, 'NO', input1_1[0]);
 runTest('올바른 괄호 #2', solution1, 'YES', input1_2[0]);
 runTest('괄호문자제거 #1', solution2, 'EFLM', input2[0]);
 runTest('크레인 인형뽑기(카카오 기출) #1', solution3, 4, JSON.parse(input3[0]), JSON.parse(input3[1]));
 runTest('후위식 연산(postfix) #1', solution4, 12, input4[0]);
+runTest('쇠막대기 #1', solution5, 17, input5_1[0]);
+runTest('쇠막대기 #2', solution5, 24, input5_2[0]);
