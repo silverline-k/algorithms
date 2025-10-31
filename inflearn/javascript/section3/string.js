@@ -4,6 +4,7 @@ import { runTest } from '../../../test-helper.js';
 const input1 = fs.readFileSync('./inflearn/javascript/section3/input1.txt').toString().trim();
 const input2 = fs.readFileSync('./inflearn/javascript/section3/input2.txt').toString().trim();
 const input3 = fs.readFileSync('./inflearn/javascript/section3/input3.txt').toString().trim();
+const input4 = fs.readFileSync('./inflearn/javascript/section3/input4.txt').toString().trim();
 
 // 1. 회문 문자열
 // 앞에서 읽을 때나 뒤에서 읽을 때나 같은 문자열인지 확인
@@ -73,6 +74,36 @@ function solution3(str) { // parseInt 사용x, 수학적으로 풀기
 //     return parseInt(answer);
 // }
 
+// 4. 가장 짧은 문자거리
+// 한 개의 문자열 s와 문자 t가 주어짐 (소문자만, 길이 100이하)
+// 문자열 s의 각 문자가 문자 t와 떨어진 최소거리 출력
+// 그냥 간단하게 오른쪽으로 한 번, 왼쪽으로 한 번씩 돌면서 더 작은 값으로 저장하면 되는 거였음 O(n) 너무 복잡하게 생각하지 말기
+function solution4(s, t) {
+    let answer = new Array(s.length).fill(0);
+    let p = s.length; // 더 작은 값으로 비교해야 하니까 t 나오기 전 왼쪽 값들엔 아예 큰 값으로 저장
+
+    // 오른쪽으로 탐색하면서 t만나면 0으로 초기화 아닐 땐 +1 하기
+    for (let i = 0; i < s.length; i++) {
+        if (s[i] === t) p = 0;
+        else {
+            answer[i] = ++p;
+        }
+    }
+
+    p = s.length;
+    // 왼쪽으로 탐색하면서 동일한 index에 기존에 저장되어 있던 값과 비교해서 더 작은 값으로 저장하기
+    for (let i = s.length - 1; i >= 0; i--) {
+        if (s[i] === t) p = 0;
+        else {
+            ++p;
+            if (answer[i] > p) answer[i] = p;
+        }
+    }
+
+    return answer.join(' ');
+}
+
 runTest('회문 문자열 #1', solution1, 'YES', input1);
 runTest('유효한 팰린드롬 #1', solution2, 'YES', input2);
 runTest('숫자만 추출 #1', solution3, 208, input3);
+runTest('가장 짧은 문자거리 #1', solution4, '1 0 1 2 1 0 1 2 2 1 0', input4.split(' ')[0], input4.split(' ')[1]);
