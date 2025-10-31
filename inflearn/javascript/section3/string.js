@@ -5,6 +5,7 @@ const input1 = fs.readFileSync('./inflearn/javascript/section3/input1.txt').toSt
 const input2 = fs.readFileSync('./inflearn/javascript/section3/input2.txt').toString().trim();
 const input3 = fs.readFileSync('./inflearn/javascript/section3/input3.txt').toString().trim();
 const input4 = fs.readFileSync('./inflearn/javascript/section3/input4.txt').toString().trim();
+const input5 = fs.readFileSync('./inflearn/javascript/section3/input5.txt').toString().trim();
 
 // 1. 회문 문자열
 // 앞에서 읽을 때나 뒤에서 읽을 때나 같은 문자열인지 확인
@@ -103,7 +104,59 @@ function solution4(s, t) {
     return answer.join(' ');
 }
 
+// 5. 문자열 압축
+// 알파벳 대문자로 이루어진 문자열에서 같은 문자가 연속으로 반복되는 경우
+// 반복되는 문자 압축하고 바로 오른쪽에 반복 횟수 표기해서 출력하기 (반복횟수 1은 생략)
+function solution5(s) {
+    let answer = '';
+    let count = 1;
+    const countMap = new Map();
+
+    // map 사용해서 알파벳 별로 반복횟수 저장
+    // 주어진 문자열에 공백 추가 해놓고 현재 알파벳과 다음 차례 알파벳이 동일한지 비교 후 동일하면 카운팅
+    // (이미 카운팅된적 있는 알파벳이 또 연속 되어서 나올 때 대비해서 비교 연산 추가 했음)
+    s += ' ';
+
+    for (let i = 0; i < s.length - 1; i++) {
+        if (s[i] === s[i + 1]) {
+            count++;
+            if ((countMap.has(s[i]) && countMap.get(s[i]) < count) || !countMap.has(s[i])) {
+                countMap.set(s[i], count);
+            }
+        } else {
+            count = 1;
+
+            if (!countMap.has(s[i])) countMap.set(s[i], count);
+        }
+    }
+
+    countMap.forEach((v, k) => {
+        answer += k + (v > 1 ? v.toString() : '');
+    });
+
+    return answer;
+}
+// 강의 풀이 (내가 고려한 케이스 없을 때 풀이인 것 같고 뒤에 공백 추가해서 +1 index 값이랑 비교하도록 되어있음)
+// function solution5(s) {
+//     let answer = '';
+//     let cnt = 1;
+
+//     s += ' ';
+
+//     for (let i = 0; i < s.length - 1; i++) {
+//         if (s[i] === s[i + 1]) cnt++;
+//         else {
+//             answer += s[i];
+//             if (cnt > 1) answer += String(cnt);
+//             cnt = 1;
+//         }
+//     }
+
+//     return answer;
+// }
+
 runTest('회문 문자열 #1', solution1, 'YES', input1);
 runTest('유효한 팰린드롬 #1', solution2, 'YES', input2);
 runTest('숫자만 추출 #1', solution3, 208, input3);
 runTest('가장 짧은 문자거리 #1', solution4, '1 0 1 2 1 0 1 2 2 1 0', input4.split(' ')[0], input4.split(' ')[1]);
+runTest('문자열 압축 #1', solution5, 'K2HS7E', input5);
