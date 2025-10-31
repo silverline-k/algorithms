@@ -79,15 +79,15 @@ function solution3(str) { // parseInt 사용x, 수학적으로 풀기
 // 문자열 s의 각 문자가 문자 t와 떨어진 최소거리 출력
 // 그냥 간단하게 오른쪽으로 한 번, 왼쪽으로 한 번씩 돌면서 더 작은 값으로 저장하면 되는 거였음 O(n) 너무 복잡하게 생각하지 말기
 function solution4(s, t) {
-    let answer = new Array(s.length).fill(0);
+    let answer = [];
     let p = s.length; // 더 작은 값으로 비교해야 하니까 t 나오기 전 왼쪽 값들엔 아예 큰 값으로 저장
 
     // 오른쪽으로 탐색하면서 t만나면 0으로 초기화 아닐 땐 +1 하기
     for (let i = 0; i < s.length; i++) {
         if (s[i] === t) p = 0;
-        else {
-            answer[i] = ++p;
-        }
+        else p++;
+
+        answer.push(p);
     }
 
     p = s.length;
