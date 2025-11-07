@@ -7,6 +7,7 @@ const input3 = fs.readFileSync('./inflearn/javascript/section6/input3.txt').toSt
 const input4 = fs.readFileSync('./inflearn/javascript/section6/input4.txt').toString().trim().split('\n');
 const input5_1 = fs.readFileSync('./inflearn/javascript/section6/input5-1.txt').toString().trim().split('\n');
 const input5_2 = fs.readFileSync('./inflearn/javascript/section6/input5-2.txt').toString().trim().split('\n');
+const input6 = fs.readFileSync('./inflearn/javascript/section6/input6.txt').toString().trim().split('\n');
 
 // 1. 올바른 괄호
 // 문자열의 최대 길이 30
@@ -130,6 +131,45 @@ function solution5(str) {
     return answer;
 }
 
+// 6. 공주구하기
+// 왕자 N명, 왕자들 나이 순으로 1번부터 N번까지 차례로 번호 매김
+// 시계 방향 동그랗게 앉음. 1번 왕자부터 시계방향으로 1부터 시작하여 번호 외침
+// 한 왕자가 K(특정숫자)를 외치면 그왕자는 제외, 다음 왕자부터 다시 1부터 재시작
+// 마지막까지 남은 왕자가 공주 구할 수 있다고 했을 때 마지막 왕자 번호 출력하기
+// function solution6(n, k) {
+//     let answer = 0;
+//     let tmp = 1; // tmp 변수 별도 관리해야 해서 가독성 떨어짐
+//     const queue = [];
+
+//     for (let i = 1; i <= n; i++) {
+//         queue.push(i);
+//     }
+
+//     while (queue.length > 1) {
+//         const princeNum = queue.shift();
+//         if (tmp !== k) {
+//             tmp++;
+//             queue.push(princeNum);
+//         } else tmp = 1;
+//     }
+
+//     answer = queue[0];
+
+//     return answer;
+// }
+// 강의 코드 (위 아래 둘다 시간복잡도 O(n^2) => shift() 앞 요소 제거 후 나머지 요소 전부 앞으로 한 칸씩 당겨서 + while문)
+function solution6(n, k) {
+    let answer;
+    let queue = Array.from({ length: n }, (_, i) => i + 1);
+    while (queue.length) {
+        for (let i = 1; i < k; i++) queue.push(queue.shift());
+        queue.shift();
+        if (queue.length === 1) answer = queue.shift();
+    }
+
+    return answer;
+}
+
 runTest('올바른 괄호 #1', solution1, 'NO', input1_1[0]);
 runTest('올바른 괄호 #2', solution1, 'YES', input1_2[0]);
 runTest('괄호문자제거 #1', solution2, 'EFLM', input2[0]);
@@ -137,3 +177,4 @@ runTest('크레인 인형뽑기(카카오 기출) #1', solution3, 4, JSON.parse(
 runTest('후위식 연산(postfix) #1', solution4, 12, input4[0]);
 runTest('쇠막대기 #1', solution5, 17, input5_1[0]);
 runTest('쇠막대기 #2', solution5, 24, input5_2[0]);
+runTest('공주 구하기 #1', solution6, 7, parseInt(input6[0].split(' ')[0]), parseInt(input6[0].split(' ')[1]));
