@@ -8,6 +8,7 @@ const input4 = fs.readFileSync('./inflearn/javascript/section6/input4.txt').toSt
 const input5_1 = fs.readFileSync('./inflearn/javascript/section6/input5-1.txt').toString().trim().split('\n');
 const input5_2 = fs.readFileSync('./inflearn/javascript/section6/input5-2.txt').toString().trim().split('\n');
 const input6 = fs.readFileSync('./inflearn/javascript/section6/input6.txt').toString().trim().split('\n');
+const input7 = fs.readFileSync('./inflearn/javascript/section6/input7.txt').toString().trim().split('\n');
 
 // 1. 올바른 괄호
 // 문자열의 최대 길이 30
@@ -170,6 +171,22 @@ function solution6(n, k) {
     return answer;
 }
 
+// 7. 교육과정 설계
+// 필수과목 순서대로 수업 들어야함, 짜여진 수업설계가 잘 된것인지 판단하기
+function solution7(required, plan) {
+    let answer = 'YES';
+
+    // required 제일 앞에 있는 수업이랑 일치하면 제거
+    const queue = required.split('');
+    for (const c of plan) {
+        if (c === queue[0]) queue.shift();
+    }
+
+    if (queue.length > 0) return 'NO';
+
+    return answer;
+}
+
 runTest('올바른 괄호 #1', solution1, 'NO', input1_1[0]);
 runTest('올바른 괄호 #2', solution1, 'YES', input1_2[0]);
 runTest('괄호문자제거 #1', solution2, 'EFLM', input2[0]);
@@ -178,3 +195,4 @@ runTest('후위식 연산(postfix) #1', solution4, 12, input4[0]);
 runTest('쇠막대기 #1', solution5, 17, input5_1[0]);
 runTest('쇠막대기 #2', solution5, 24, input5_2[0]);
 runTest('공주 구하기 #1', solution6, 7, parseInt(input6[0].split(' ')[0]), parseInt(input6[0].split(' ')[1]));
+runTest('교육과정 설계 #1', solution7, 'YES', input7[0], input7[1]);
