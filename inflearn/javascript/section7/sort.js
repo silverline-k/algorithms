@@ -4,6 +4,7 @@ import { runTest } from '../../../test-helper.js';
 
 const input1 = fs.readFileSync('./inflearn/javascript/section7/input1.txt').toString().trim().split('\n');
 const input2 = fs.readFileSync('./inflearn/javascript/section7/input2.txt').toString().trim().split('\n');
+const input3 = fs.readFileSync('./inflearn/javascript/section7/input3.txt').toString().trim().split('\n');
 
 // 1. 선택 정렬
 // 배열 항목 차례대로 도는데
@@ -42,6 +43,41 @@ function solution2(n, arr) {
     return arr.join(' ');
 }
 
+// 3. Special Sort(구글 인터뷰)
+// 강의 풀이, 버블 정렬로 풂
+function solution3(n, arr) {
+    for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+            if (arr[j] > 0 && arr[j + 1] < 0) {
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+
+    return arr.join(' ');
+}
+// 음수 발견하면 해당 index에 넣고 나머지 +1
+// function solution3(n, arr) {
+//     let tmp;
+
+//     for (let i = 0; i < n; i++) {
+//         for (let j = i + 1; j < n; j++) {
+//             if (arr[j] < 0) {
+//                 tmp = arr[i];
+//                 arr[i] = arr[j];
+
+//                 for (let k = i + 1; k <= j; k++) {
+//                     [arr[k], tmp] = [tmp, arr[k]];
+//                 }
+
+//                 break;
+//             }
+//         }
+//     }
+
+//     return arr.join(' ');
+// }
+
 runTest('선택 정렬 #1', solution1, '5 7 11 13 15 23', parseInt(input1[0]), input1[1].split(' ').map(Number));
 runTest('버블 정렬 #1', solution2, '5 7 11 13 15 23', parseInt(input2[0]), input2[1].split(' ').map(Number));
-
+runTest('Special Sort(구글 인터뷰)', solution3, '-3 -2 -6 1 2 3 5 6', parseInt(input3[0]), input3[1].split(' ').map(Number));
