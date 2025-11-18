@@ -29,14 +29,15 @@ function solution2(n, arr) {
     let tmp;
 
     for (let i = 0; i < n; i++) {
-        for (let j = i + 1; j < n; j++) {
+        // 버블 정렬은 변경하면 오른쪽부터 높은 숫자로 고정돼서 i만큼 빼주기
+        for (let j = i + 1; j < n - i; j++) {
             if (arr[j - 1] > arr[j]) {
-                tmp = arr[j-1];
-                arr[j-1] = arr[j];
+                tmp = arr[j - 1];
+                arr[j - 1] = arr[j];
                 arr[j] = tmp;
             }
         }
-    }    
+    }
 
     return arr.join(' ');
 }
