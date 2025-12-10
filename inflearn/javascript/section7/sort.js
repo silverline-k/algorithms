@@ -5,6 +5,7 @@ import { runTest } from '../../../test-helper.js';
 const input1 = fs.readFileSync('./inflearn/javascript/section7/input1.txt').toString().trim().split('\n');
 const input2 = fs.readFileSync('./inflearn/javascript/section7/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section7/input3.txt').toString().trim().split('\n');
+const input4 = fs.readFileSync('./inflearn/javascript/section7/input4.txt').toString().trim().split('\n');
 
 // 1. 선택 정렬
 // 배열 항목 차례대로 도는데
@@ -78,6 +79,28 @@ function solution3(n, arr) {
 //     return arr.join(' ');
 // }
 
+// 4. 삽입 정렬 - 오름차순
+// 현재 인덱스의 값을 왼쪽에 있는 값과 비교해서 더 작은값이면 스왑
+function solution4(n, arr) {
+    let answer = '';
+
+    for (let i = 1; i < n; i++) {
+        let curr = i;
+
+        while (curr >= 0) {
+            if (arr[curr] < arr[curr - 1]) {
+                [arr[curr], arr[curr - 1]] = [arr[curr - 1], arr[curr]];
+                curr--;
+            } else curr = -1;
+        }
+    }
+
+    answer = arr.join(' ');
+
+    return answer;
+}
+
 runTest('선택 정렬 #1', solution1, '5 7 11 13 15 23', parseInt(input1[0]), input1[1].split(' ').map(Number));
 runTest('버블 정렬 #1', solution2, '5 7 11 13 15 23', parseInt(input2[0]), input2[1].split(' ').map(Number));
 runTest('Special Sort(구글 인터뷰)', solution3, '-3 -2 -6 1 2 3 5 6', parseInt(input3[0]), input3[1].split(' ').map(Number));
+runTest('삽입 정렬 #1', solution4, '5 6 7 9 10 11', parseInt(input4[0]), input4[1].split(' ').map(Number));
