@@ -6,6 +6,7 @@ const input1 = fs.readFileSync('./inflearn/javascript/section7/input1.txt').toSt
 const input2 = fs.readFileSync('./inflearn/javascript/section7/input2.txt').toString().trim().split('\n');
 const input3 = fs.readFileSync('./inflearn/javascript/section7/input3.txt').toString().trim().split('\n');
 const input4 = fs.readFileSync('./inflearn/javascript/section7/input4.txt').toString().trim().split('\n');
+const input5 = fs.readFileSync('./inflearn/javascript/section7/input5.txt').toString().trim().split('\n');
 
 // 1. 선택 정렬
 // 배열 항목 차례대로 도는데
@@ -100,7 +101,42 @@ function solution4(n, arr) {
     return answer;
 }
 
+// 5. Least Recently Used(카카오 캐시 문제 변형)
+// 저장되어 있는 작업은 맨 앞이 가장 최근
+// 새로운 작업을 캐시에 저장할 때 모든 작업은 뒤로 밀리고 제일 마지막에 있던 작업은 캐시에서 삭제됨
+// 마지막 작업 후 캐시메모리의 상태를 가장 최근 사용된 작업부터 차례대로 출력
+function solution5(size, n, jobs) {
+    let answer = Array(size).fill(0);
+
+    for (const job of jobs) {
+        let pos = -1;
+        for (let i = 0; i < size; i++) {
+            if (answer[i] === job) {
+                pos = i;
+                break;
+            }
+        }
+
+        if (pos !== -1) {
+            // cache miss
+            for (let j = pos; j > 0; j--) {
+                answer[j] = answer[j - 1];
+            }
+        } else {
+            // cache hit
+            for (let j = size - 1; j > 0; j--) {
+                answer[j] = answer[j - 1];
+            }
+        }
+
+        answer[0] = job;
+    }
+
+    return answer.join(' ');
+}
+
 runTest('선택 정렬 #1', solution1, '5 7 11 13 15 23', parseInt(input1[0]), input1[1].split(' ').map(Number));
 runTest('버블 정렬 #1', solution2, '5 7 11 13 15 23', parseInt(input2[0]), input2[1].split(' ').map(Number));
 runTest('Special Sort(구글 인터뷰)', solution3, '-3 -2 -6 1 2 3 5 6', parseInt(input3[0]), input3[1].split(' ').map(Number));
 runTest('삽입 정렬 #1', solution4, '5 6 7 9 10 11', parseInt(input4[0]), input4[1].split(' ').map(Number));
+runTest('Least Recently Used(카카오 캐시 문제 변형) #1', solution5, '7 5 3 2 6', parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
