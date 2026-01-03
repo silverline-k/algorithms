@@ -7,6 +7,8 @@ const input2 = fs.readFileSync('./inflearn/javascript/section7/input2.txt').toSt
 const input3 = fs.readFileSync('./inflearn/javascript/section7/input3.txt').toString().trim().split('\n');
 const input4 = fs.readFileSync('./inflearn/javascript/section7/input4.txt').toString().trim().split('\n');
 const input5 = fs.readFileSync('./inflearn/javascript/section7/input5.txt').toString().trim().split('\n');
+const input6_1 = fs.readFileSync('./inflearn/javascript/section7/input6-1.txt').toString().trim().split('\n');
+const input6_2 = fs.readFileSync('./inflearn/javascript/section7/input6-2.txt').toString().trim().split('\n');
 
 // 1. 선택 정렬
 // 배열 항목 차례대로 도는데
@@ -135,8 +137,47 @@ function solution5(size, n, jobs) {
     return answer.join(' ');
 }
 
+// 6. 장난꾸러기 현수
+// 반 학생들 키 작은 순서대로 세우고 앞에서부터 번호 부여 (1~n번까지)
+// input: N(5<=N<=100), 학생들키(120<=H<=180)
+// output: 현수 배정 번호, 짝꿍 배정 번호 출력
+// function solution6(n, arr) {
+//     let num1 = -1;
+//     let num2 = -1;
+
+//     for (let i = 1; i < n; i++) {
+//         if (arr[i - 1] > arr[i]) {
+//             if (num1 === -1) num1 = i;
+//             else if (num2 === -1) num2 = i + 1;
+//         } else if (arr[i - 1] === arr[i]) {
+//             if (num1 === -1) num1 = i;
+//         }
+//     }
+
+//     return `${num1} ${num2}`;
+// }
+/**
+ * 강의 풀이 (내가 푼건 너무 1차원적으로 단순하게 생각함)
+ * 1. 정렬하기
+ * 2. 원래 서 있어야 할 순서와 바꾼 상태 비교하기
+ * 3. 서로 값이 다른 index를 +1 해서 answer에 push하기
+*/
+function solution6(n, arr) {
+    let answer = [];
+    let sortArr = arr.slice();
+    sortArr.sort((a, b) => a - b);
+
+    for (let i = 0; i < n; i++) {
+        if (arr[i] !== sortArr[i]) answer.push(i + 1);
+    }
+
+    return answer.join(' ');
+}
+
 runTest('선택 정렬 #1', solution1, '5 7 11 13 15 23', parseInt(input1[0]), input1[1].split(' ').map(Number));
 runTest('버블 정렬 #1', solution2, '5 7 11 13 15 23', parseInt(input2[0]), input2[1].split(' ').map(Number));
 runTest('Special Sort(구글 인터뷰)', solution3, '-3 -2 -6 1 2 3 5 6', parseInt(input3[0]), input3[1].split(' ').map(Number));
 runTest('삽입 정렬 #1', solution4, '5 6 7 9 10 11', parseInt(input4[0]), input4[1].split(' ').map(Number));
 runTest('Least Recently Used(카카오 캐시 문제 변형) #1', solution5, '7 5 3 2 6', parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
+runTest('장난꾸러기 현수 #1', solution6, '3 8', parseInt(input6_1[0]), input6_1[1].split(' ').map(Number));
+runTest('장난꾸러기 현수 #2', solution6, '3 5', parseInt(input6_2[0]), input6_2[1].split(' ').map(Number));
