@@ -1,4 +1,5 @@
 "use strict";
+import { runTest } from '../../../test-helper.js';
 
 // 1. 세 수 중 최솟값
 export function getMinValue(a, b, c) {
@@ -32,3 +33,17 @@ export function calculateNumberOfPencils(studentsNum) {
 
   return pencilsNum;
 }
+
+// 4. 1부터 N까지 합 출력하기
+// 1부터 N까지의 합 출력 (N<=20)
+function solution4(n) {
+  let answer = 0;
+
+  for (let i = 1; i < n + 1; i++) {
+    answer += i;
+  }
+
+  return answer;
+}
+
+runTest('1부터 N까지 합 출력하기 #1', solution4, 21, 6);
