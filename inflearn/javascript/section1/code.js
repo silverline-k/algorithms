@@ -46,4 +46,19 @@ function solution4(n) {
   return answer;
 }
 
+// 5. 최솟값 구하기
+function solution5(arr) {
+  let answer = 0;
+  let min = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (min > arr[i]) min = arr[i];
+  }
+
+  answer = min;
+
+  return answer;
+}
+
 runTest('1부터 N까지 합 출력하기 #1', solution4, 21, 6);
+runTest('최솟값 구하기 #1', solution5, 2, [5, 3, 7, 11, 2, 15, 17]);
