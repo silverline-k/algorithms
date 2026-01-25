@@ -1,5 +1,8 @@
 "use strict";
+import fs from 'fs';
 import { runTest } from '../../../test-helper.js';
+const input7_1 = fs.readFileSync('./inflearn/javascript/section1/input7-1.txt').toString().trim().split('\n');
+const input7_2 = fs.readFileSync('./inflearn/javascript/section1/input7-2.txt').toString().trim().split('\n');
 
 // 1. 세 수 중 최솟값
 export function getMinValue(a, b, c) {
@@ -77,6 +80,24 @@ function solution6(arr) {
   return [sum, min].join('\n');
 }
 
+// 7. 10부제
+// 숫자와 날짜의 일의 자리 숫자가 일치하면 운행 금지, 위반하는 자동차 대수 출력
+// input: 일의 자리 숫자, 7대의 자동차 번호 끝 두 자리 숫자
+// output: 10부제 위반하는 차량의 대수
+function solution7(day, carNums) {
+  let answer = 0;
+
+  for (let i = 0; i < carNums.length; i++) {
+    let num = carNums[i] % 10;
+
+    if (num === day) answer++;
+  }
+
+  return answer;
+}
+
 runTest('1부터 N까지 합 출력하기 #1', solution4, 21, 6);
 runTest('최솟값 구하기 #1', solution5, 2, [5, 3, 7, 11, 2, 15, 17]);
 runTest('홀수 #1', solution6, '256\n41', [12, 77, 38, 41, 53, 92, 85]);
+runTest('10부제 #1', solution7, 3, parseInt(input7_1[0]), input7_1[1].split(' ').map(Number));
+runTest('10부제 #2', solution7, 3, parseInt(input7_2[0]), input7_2[1].split(' ').map(Number));
