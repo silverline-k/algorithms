@@ -9,6 +9,7 @@ const input4 = fs.readFileSync('./inflearn/javascript/section7/input4.txt').toSt
 const input5 = fs.readFileSync('./inflearn/javascript/section7/input5.txt').toString().trim().split('\n');
 const input6_1 = fs.readFileSync('./inflearn/javascript/section7/input6-1.txt').toString().trim().split('\n');
 const input6_2 = fs.readFileSync('./inflearn/javascript/section7/input6-2.txt').toString().trim().split('\n');
+const input7 = fs.readFileSync('./inflearn/javascript/section7/input7.txt').toString().trim().split('\n');
 
 // 1. 선택 정렬
 // 배열 항목 차례대로 도는데
@@ -174,6 +175,23 @@ function solution6(n, arr) {
     return answer.join(' ');
 }
 
+// 7. 좌표 정렬 (그리디 문제 대비 정렬 문제)
+// N개의 표면상 좌표(x, y)가 주어지면 모든 좌표 오름차순으로 정렬
+// 정렬 기준: x값 우선, 같을 경우 y값까지
+// input: 좌표 개수 N(3<=N<=100000), 좌표 목록 2차원배열
+// output: N개의 좌표 정렬해서 출력
+function solution7(n, arr) {
+    let answer = [];
+
+    arr.sort((a,b) => {
+        if (a[0] === b[0]) return a[1] - b[1];
+        else return a[0] - b[0];
+    });
+    answer = arr;
+
+    return answer;
+}
+
 runTest('선택 정렬 #1', solution1, '5 7 11 13 15 23', parseInt(input1[0]), input1[1].split(' ').map(Number));
 runTest('버블 정렬 #1', solution2, '5 7 11 13 15 23', parseInt(input2[0]), input2[1].split(' ').map(Number));
 runTest('Special Sort(구글 인터뷰)', solution3, '-3 -2 -6 1 2 3 5 6', parseInt(input3[0]), input3[1].split(' ').map(Number));
@@ -181,3 +199,4 @@ runTest('삽입 정렬 #1', solution4, '5 6 7 9 10 11', parseInt(input4[0]), inp
 runTest('Least Recently Used(카카오 캐시 문제 변형) #1', solution5, '7 5 3 2 6', parseInt(input5[0].split(' ')[0]), parseInt(input5[0].split(' ')[1]), input5[1].split(' ').map(Number));
 runTest('장난꾸러기 현수 #1', solution6, '3 8', parseInt(input6_1[0]), input6_1[1].split(' ').map(Number));
 runTest('장난꾸러기 현수 #2', solution6, '3 5', parseInt(input6_2[0]), input6_2[1].split(' ').map(Number));
+runTest('좌표 정렬 #1', solution7, [[1, 2], [1, 3], [2, 5], [2, 7], [3, 6]], input7.shift(), input7.map(v => v.split(' ').map(Number)));
