@@ -2,6 +2,7 @@ import fs from 'fs';
 import { runTest } from '../../../test-helper.js';
 
 const input10 = fs.readFileSync('inflearn/javascript/section7/input10.txt').toString().trim().split('\n');
+const input11 = fs.readFileSync('inflearn/javascript/section7/input11.txt').toString().trim().split('\n');
 
 // 10. 이분검색
 // 임의의 N개의 숫자 입력으로 주어짐, 오름차순으로 정렬하기
@@ -33,4 +34,45 @@ function solution10(n, target, arr) {
     return answer;
 }
 
+// 11. 뮤직비디오(결정알고리즘-기본 이분검색으로 풂)
+// DVD에 총 N개의 곡 들어감, 녹화할 때 라이브 순서 그대로 유지 되어야 함
+// M개의 DVD에 모든 동영상을 녹화하기로 함, DVD의 크기(녹화 가능한 길이) 최소로 하고픔
+// M개의 DVD는 모두 같은 크기여야 함
+// input: n(1<=n<=1000), m(1<=m<=n), 라이브 곡 순서대로 곡 길이 분단위 배열 (곡 길이는 10000분이하)
+// output: DVD 최소 용량 크기
+function solution11(n, m, arr) {
+    let answer = 0;
+
+    // DVD 용량 범위 설정
+    let lt = Math.max(...arr);
+    let rt = arr.reduce((a, b) => a + b, 0);
+
+    while (lt <= rt) {
+        // DVD 한 장의 용량
+        let mid = parseInt((lt + rt) / 2);
+        // 계속해서 최소 용량 찾기
+        if (getCount(arr, mid) <= m) {
+            answer = mid;
+            rt = mid - 1;
+        } else lt = mid + 1;
+    }
+
+    return answer;
+}
+// 결정 알고리즘은 답이 유효한지 확인하는 함수가 제일 중요
+function getCount(songs, capacity) {
+    let count = 1; // DVD 장 수
+    let sum = 0; // 누적 용량
+
+    for (let song of songs) {
+        if (sum + song > capacity) {
+            count++;
+            sum = song;
+        } else sum += song;
+    }
+
+    return count;
+}
+
 runTest('이분검색 #1', solution10, 3, parseInt(input10[0].split(' ')[0]), parseInt(input10[0].split(' ')[1]), input10[1].split(' ').map(Number));
+runTest('뮤직비디오(결정알고리즘) #1', solution11, 17, parseInt(input11[0].split(' ')[0]), parseInt(input11[0].split(' ')[1]), input11[1].split(' ').map(Number));
