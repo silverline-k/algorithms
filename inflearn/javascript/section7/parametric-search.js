@@ -3,6 +3,7 @@ import { runTest } from '../../../test-helper.js';
 
 const input10 = fs.readFileSync('inflearn/javascript/section7/input10.txt').toString().trim().split('\n');
 const input11 = fs.readFileSync('inflearn/javascript/section7/input11.txt').toString().trim().split('\n');
+const input12 = fs.readFileSync('inflearn/javascript/section7/input12.txt').toString().trim().split('\n');
 
 // 10. 이분검색
 // 임의의 N개의 숫자 입력으로 주어짐, 오름차순으로 정렬하기
@@ -74,5 +75,46 @@ function getCount(songs, capacity) {
     return count;
 }
 
+// 12. 마구간 정하기(결정알고리즘)
+// n개의 마구간 수직선상에 있음, x1,x2,x3,...xN의 좌표를 가짐, 마구간간에 좌표 중복x
+// c마리의 말 갖고있음, 말들은 서로 가까이 있는 것을 좋아하지 않음, 각 마구간에는 한 마리의 말만
+// 가장 가까운 두 말의 거리가 최대가 되게 말을 마구간에 배치하고픔
+// c마리의 말을 n개의 마구간에 배치했을 때 가장 가까운 두 말의 거리가 최대가 되는 최댓값 출력
+// input: n(3<=n<=200000), c(2<=c<=n), 마구간 좌표 xi(0<=xi<=1000000000)
+// output: 가장 가까운 두 말의 최대 거리
+function solution12(n, c, arr) {
+    let answer = 0;
+
+    arr.sort((a, b) => a - b);
+
+    let low = 1;
+    let high = arr[arr.length - 1];
+
+    // 범위 구하기
+    while (low <= high) {
+        let count = 1;
+        let endpoint = arr[0]; // 방금 전 말을 배치한 마구간 좌표 저장, 좌표 비교하기 위함
+        let mid = parseInt((low + high) / 2);
+
+        for (let i = 1; i < n; i++) {
+            // 방금 전에 들어간 말의 마구간 좌표와 현재 마구간 좌표의 차이가 크거나 같아야 함
+            if (arr[i] - endpoint >= mid) {
+                endpoint = arr[i];
+                count++;
+            }
+        }
+
+        // 마릿수 충족하는지 확인하고 범위 다시 지정
+        if (count < c) high = mid - 1;
+        else {
+            answer = mid;
+            low = mid + 1;
+        }
+    }
+
+    return answer;
+}
+
 runTest('이분검색 #1', solution10, 3, parseInt(input10[0].split(' ')[0]), parseInt(input10[0].split(' ')[1]), input10[1].split(' ').map(Number));
 runTest('뮤직비디오(결정알고리즘) #1', solution11, 17, parseInt(input11[0].split(' ')[0]), parseInt(input11[0].split(' ')[1]), input11[1].split(' ').map(Number));
+runTest('마구간 정하기(결정알고리즘) #1', solution12, 3, parseInt(input12[0].split(' ')[0]), parseInt(input12[0].split(' ')[1]), input12[1].split(' ').map(Number));
