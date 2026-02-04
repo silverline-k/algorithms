@@ -47,6 +47,33 @@ function postorder(vertex) {
     return answer.join(' ');
 }
 
+// 4. 부분집합 구하기(DFS)
+// 자연수 N(1<=N<=10)이 주어지면 1부터 N까지의 원소를 갖는 집합의 부분집합 모두 출력(공집합 제외)
+function solution4(n) {
+    let answer = [];
+    let check = Array.from({ length: n }, () => 0);
+
+    // 제일 작은 숫자부터 출력해야 함
+    function dfs(v) {
+        if (v > n) {
+            let tmp = '';
+            for (let i = 0; i < n; i++) {
+                if (check[i] === 1) tmp += `${i + 1} `;
+            }
+            if (tmp.length) answer.push(tmp.trim());
+            return;
+        }
+        check[v - 1] = 1;
+        dfs(v + 1);
+        check[v - 1] = 0;
+        dfs(v + 1);
+    }
+
+    dfs(1);
+    return answer;
+}
+
 runTest('이진트리순회 - 전위순회', preorder, '1 2 4 5 3 6 7', 1);
 runTest('이진트리순회 - 중위순회', inorder, '4 2 5 1 6 3 7', 1);
 runTest('이진트리순회 - 후위순회', postorder, '4 5 2 6 7 3 1', 1);
+runTest('부분집합 구하기(DFS) #1', solution4, ['1 2 3', '1 2', '1 3', '1', '2 3', '2', '3'], 3);
