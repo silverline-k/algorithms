@@ -2,6 +2,7 @@ import fs from 'fs';
 import { runTest } from '../../../test-helper.js';
 
 const input5 = fs.readFileSync('inflearn/javascript/section8/input5.txt').toString().trim().split('\n');
+const input6 = fs.readFileSync('inflearn/javascript/section8/input6.txt').toString().trim().split('\n');
 
 // 3. 이진트리 순회(깊이우선탐색)
 // 이진트리 전위순회, 중위순회, 후위순회 출력
@@ -105,8 +106,35 @@ function solution5(n, set) {
     return answer;
 }
 
+// 6. 바둑이 승차(DFS)
+// 바둑이들 트럭에 태우고 시장에 가려고 할 때, C킬로그램 넘게는 탑승 불가
+// N마리의 바둑이와 각 바둑이의 무게 W가 주어지면, 트럭에 태울 수 있는 가장 무거운 무게 구하기
+// input: C(1<=C<=100000000), N(1<=N<=30), n마리의 바둑이 무게 정수형 배열
+// output: 가장 무거운 무게
+function solution6(c, n, arr) {
+    let answer = 0;
+
+    // 모든 경우의 수에 맞게 dfs
+    // 현재 킬로그램과 초과했는지 확인할 수 있는 total 킬로그램 넘기면서 하기
+    // 경우의 수에 더한 값 배열로 저장하고 마지막에 가장 큰 값 return
+    function dfs(level, sum) {
+        if (level === n) {
+            if (sum <= c && sum > answer) {
+                answer = sum;
+            }
+        } else {
+            dfs(level + 1, sum + arr[level]);
+            dfs(level + 1, sum);
+        }
+    }
+    dfs(0, 0);
+
+    return answer;
+}
+
 runTest('이진트리순회 - 전위순회', preorder, '1 2 4 5 3 6 7', 1);
 runTest('이진트리순회 - 중위순회', inorder, '4 2 5 1 6 3 7', 1);
 runTest('이진트리순회 - 후위순회', postorder, '4 5 2 6 7 3 1', 1);
 runTest('부분집합 구하기(DFS) #1', solution4, ['1 2 3', '1 2', '1 3', '1', '2 3', '2', '3'], 3);
 runTest('합이 같은 부분집합(DFS: 아마존 인터뷰) #1', solution5, 'YES', parseInt(input5[0]), input5[1].split(' ').map(Number));
+runTest('바둑이 승차(DFS) #1', solution6, 242, parseInt(input6[0].split(' ')[0]), parseInt(input6.shift().split(' ')[1]), input6.map(Number));
