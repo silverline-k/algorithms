@@ -3,6 +3,7 @@ import { runTest } from '../../../test-helper.js';
 
 const input5 = fs.readFileSync('inflearn/javascript/section8/input5.txt').toString().trim().split('\n');
 const input6 = fs.readFileSync('inflearn/javascript/section8/input6.txt').toString().trim().split('\n');
+const input7 = fs.readFileSync('inflearn/javascript/section8/input7.txt').toString().trim().split('\n');
 
 // 3. 이진트리 순회(깊이우선탐색)
 // 이진트리 전위순회, 중위순회, 후위순회 출력
@@ -132,9 +133,37 @@ function solution6(c, n, arr) {
     return answer;
 }
 
+// 7. 최대점수 구하기(DFS)
+// 선생님이 주신 N개의 문제를 풀 때 각 문제 풀었을 때 얻는 점수와 푸는데 걸리는 시간 주어짐
+// 제한시간 M안에 N개의 문제 중 최대점수 얻을 수 있도록 해야 함 - 해당 문제는 해당시간이 걸리면 푸는 걸로 간주, 한 유형당 한개만 풀 수 있음)
+// input: 문제의 개수 n(1<=n<=20), 제한 시간 m(10<=m<=300), 문제 풀었을 때 점수 - 걸리는 시간 배열
+// ouput: 제한 시간 안에 얻을 수 있는 최대 점수
+function solution7(n, m, arr) {
+    let answer = 0;
+
+    // 모든 경우의 수 더하기
+    // 제한시간 초과되면 return
+    // 문제 점수 큰 값 저장
+    function dfs(level, totalTime, totalScore) {
+        if (totalTime > m) return;
+        if (level === n) {
+            if (totalScore > answer) {
+                answer = totalScore;
+            }
+        } else {
+            dfs(level + 1, totalTime + arr[level][1], totalScore + arr[level][0]);
+            dfs(level + 1, totalTime, totalScore);
+        }
+    }
+    dfs(0, 0, 0);
+
+    return answer;
+}
+
 runTest('이진트리순회 - 전위순회', preorder, '1 2 4 5 3 6 7', 1);
 runTest('이진트리순회 - 중위순회', inorder, '4 2 5 1 6 3 7', 1);
 runTest('이진트리순회 - 후위순회', postorder, '4 5 2 6 7 3 1', 1);
 runTest('부분집합 구하기(DFS) #1', solution4, ['1 2 3', '1 2', '1 3', '1', '2 3', '2', '3'], 3);
 runTest('합이 같은 부분집합(DFS: 아마존 인터뷰) #1', solution5, 'YES', parseInt(input5[0]), input5[1].split(' ').map(Number));
 runTest('바둑이 승차(DFS) #1', solution6, 242, parseInt(input6[0].split(' ')[0]), parseInt(input6.shift().split(' ')[1]), input6.map(Number));
+runTest('최대점수 구하기(DFS) #1', solution7, 41, parseInt(input7[0].split(' ')[0]), parseInt(input7.shift().split(' ')[1]), input7.map(v => v.split(' ').map(Number)));
