@@ -114,12 +114,12 @@ function solution5(n, set) {
 function solution6(c, n, arr) {
     let answer = 0;
 
-    // 모든 경우의 수에 맞게 dfs
-    // 현재 킬로그램과 초과했는지 확인할 수 있는 total 킬로그램 넘기면서 하기
-    // 경우의 수에 더한 값 배열로 저장하고 마지막에 가장 큰 값 return
+    // 모든 경우의 수에 맞게 더 하고
+    // 현재 킬로그램과 제한 킬로그램 초과했는지 확인하고 큰값 비교 후 할당
     function dfs(level, sum) {
+        if (sum > c) return;
         if (level === n) {
-            if (sum <= c && sum > answer) {
+            if (sum > answer) {
                 answer = sum;
             }
         } else {
