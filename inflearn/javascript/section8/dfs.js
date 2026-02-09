@@ -160,6 +160,33 @@ function solution7(n, m, arr) {
     return answer;
 }
 
+// 8. 중복순열 구하기
+// 1부터 N까지 적힌 구슬을 중복을 허락하여 M번을 뽑아 일렬로 나열하는 방법 모두 출력
+// input: N(3<=N<=10), M(2<=M<=N)
+// output: 결과(2차원 배열, 오름차순), 총 경우의 수
+function solution8(n, m) {
+    let answer = [];
+    let tmp = Array.from({ length: m }, () => 0);
+
+    // 재귀함수가 아닌 다중 for문으로 할 경우 m개만큼의 반복문 중첩돼서 재귀함수 사용해야 함(level만 바꾸면 되기 때문에)
+    function dfs(level) {
+        if (level === m) {
+            // tmp를 그냥 push 할 경우 얕은 복사라서 최종 변경된 값으로 보임
+            // 새로운 배열 생성해서 저장할 것
+            answer.push(tmp.slice());
+        } else {
+            for (let i = 1; i <= n; i++) {
+                tmp[level] = i;
+                dfs(level + 1);
+            }
+        }
+    }
+
+    dfs(0);
+
+    return [answer, answer.length];
+}
+
 runTest('이진트리순회 - 전위순회', preorder, '1 2 4 5 3 6 7', 1);
 runTest('이진트리순회 - 중위순회', inorder, '4 2 5 1 6 3 7', 1);
 runTest('이진트리순회 - 후위순회', postorder, '4 5 2 6 7 3 1', 1);
@@ -167,3 +194,4 @@ runTest('부분집합 구하기(DFS) #1', solution4, ['1 2 3', '1 2', '1 3', '1'
 runTest('합이 같은 부분집합(DFS: 아마존 인터뷰) #1', solution5, 'YES', parseInt(input5[0]), input5[1].split(' ').map(Number));
 runTest('바둑이 승차(DFS) #1', solution6, 242, parseInt(input6[0].split(' ')[0]), parseInt(input6.shift().split(' ')[1]), input6.map(Number));
 runTest('최대점수 구하기(DFS) #1', solution7, 41, parseInt(input7[0].split(' ')[0]), parseInt(input7.shift().split(' ')[1]), input7.map(v => v.split(' ').map(Number)));
+runTest('중복순열 구하기 #1', solution8, [[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]], 9], 3, 2);
